@@ -8,10 +8,10 @@ Tap/click any of the 10 category tiles -> the mapped video streams full-screen f
 Supabase Storage (the source videos are themselves 1080x1920, so they fill the canvas
 exactly). Each video plays **once**, then returns to the menu.
 
-Nothing is drawn over the video. The Back button is still there and still works, but it
-is invisible: the top-left corner of the screen (280 x 220 in stage pixels) is a silent
-exit target. **Esc** also exits, and on the error screen a tap anywhere goes back, since
-that screen carries no visible control.
+A single **Back** button sits at the bottom right - dark glass over the video, flipped
+to a light treatment on the branded surface so it reads against either background.
+There is no progress bar and no other overlay. **Esc** also exits, and on the error
+screen a tap anywhere goes back.
 
 ## Player states
 
@@ -24,7 +24,7 @@ the transition in and out is seamless.
 | `needstap` | Same surface with a "Tap to play" button - only if the browser blocked autoplay |
 | `loading`  | Mid-playback buffering: a small orange ring over the video, not the full surface |
 | `failed`   | Same surface with "Video unavailable" and the object path that failed |
-| (playing)  | Video full-bleed, no overlay controls, thin progress bar at the bottom |
+| (playing)  | Video full-bleed, Back the only thing drawn over it |
 
 `booting` clears on the video's first `playing` event; a blocked autoplay is treated as
 `needstap`, never as a failure. Genuine load failures come only from the `<video>`
