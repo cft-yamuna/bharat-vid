@@ -1,0 +1,10 @@
+# Source videos (~512 MB) live in Supabase Storage: npci/bh_videos.
+# The app streams them from there, so there is nothing to gain from
+# committing them — and several exceed GitHub's 50 MB warning threshold.
+# To include them anyway, delete this rule and use Git LFS.
+Bharath Connect/
+
+# OS cruft
+Thumbs.db
+desktop.ini
+.DS_Store
