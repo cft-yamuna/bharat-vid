@@ -219,15 +219,11 @@ body{
 
 <script>
 /* ============================================================
-   CONFIG — Supabase Storage
-   Bucket "npci" is public, so plain public URLs are used.
-   Set PUBLIC = false (and supply an anon key) to use signed URLs.
+   CONFIG — local video files
+   Videos are served from the bh_videos/ folder next to index.html,
+   so the app runs fully offline. No network round trip needed.
    ============================================================ */
-const SUPABASE_URL = "https://ozkbnimjuhaweigscdby.supabase.co";
-const BUCKET       = "npci";
-const FOLDER       = "bh_videos";
-const PUBLIC       = true;
-const SUPABASE_KEY = "";   /* only needed when PUBLIC === false */
+const FOLDER = "bh_videos";
 
 /* ---- tile geometry, measured off new.png at 1080 x 1920 ----
    Three columns pitched 200px apart, centred on the phone screen
@@ -258,19 +254,7 @@ const CATEGORIES = [
   { id:"transit",     label:"Transit",         file:"Transit.mp4"     }
 ];
 
-const publicUrl = f =>
-  SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + FOLDER + "/" + encodeURIComponent(f);
-
-async function signedUrl(f){
-  const r = await fetch(SUPABASE_URL + "/storage/v1/object/sign/" + BUCKET + "/" + FOLDER + "/" + encodeURIComponent(f), {
-    method:"POST",
-    headers:{ "Content-Type":"application/json", apikey:SUPABASE_KEY, Authorization:"Bearer " + SUPABASE_KEY },
-    body: JSON.stringify({ expiresIn: 3600 })
-  });
-  if(!r.ok) throw new Error("sign failed " + r.status);
-  const j = await r.json();
-  return SUPABASE_URL + "/storage/v1" + j.signedURL;
-}
+const localUrl = f => FOLDER + "/" + encodeURIComponent(f);
 </script>
 
 <script>
@@ -313,14 +297,7 @@ function play(c){
 
   errU.textContent = FOLDER + "/" + c.file;
 
-  /* Public URLs are built synchronously so vid.play() still runs inside the
-     tap's user-activation window; signing needs a round trip, so that path
-     may fall back to the tap-to-play button. */
-  if(PUBLIC){
-    start(publicUrl(c.file));
-  } else {
-    signedUrl(c.file).then(start).catch(function(e){ fail(c.file, e && e.message); });
-  }
+  start(localUrl(c.file));
 }
 
 function start(url){

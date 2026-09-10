@@ -1,7 +1,8 @@
-# Source videos (~512 MB) live in Supabase Storage: npci/bh_videos.
-# The app streams them from there, so there is nothing to gain from
-# committing them — and several exceed GitHub's 50 MB warning threshold.
-# To include them anyway, delete this rule and use Git LFS.
+# Source videos (~500+ MB) are downloaded locally into bh_videos/ so the
+# app runs fully offline. Several exceed GitHub's 50 MB warning threshold,
+# so they stay out of git. To include them anyway, delete this rule and
+# use Git LFS.
+bh_videos/
 Bharath Connect/
 
 # OS cruft
